@@ -12,3 +12,6 @@ b1 = tf.constant([5, 3, 8])
 b2 = tf.constant([3, -1, 2])
 b3 = compat.v1.add(b1, b2)
 print(b3)
+
+# sess = tf.Session()
+# print("sess.run(b3): ",sess.run(b3))
