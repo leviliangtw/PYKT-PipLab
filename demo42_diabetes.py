@@ -22,9 +22,10 @@ model.summary()
 model.compile(loss='binary_crossentropy',
               optimizer='adam',
               metrics=['accuracy'])
-
-# learn whole data, then get scores from the same whole data
-model.fit(inputList, resultList, epochs=200, batch_size=5)
+model.fit(inputList, resultList,
+          epochs=200,
+          batch_size=5,
+          validation_split=0.2)
 scores = model.evaluate(inputList, resultList)
 print("metrics name: ", model.metrics_names)
 print("\n")

@@ -1,0 +1,11 @@
+Anaconda Prompt
+
+# conda create -n tf37 python=3.7
+# conda info --envs
+# conda activate tf37
+
+# conda install tensorflow-gpu
+# conda list
+
+# conda disactivate
+# conda remove -n tf37 --all

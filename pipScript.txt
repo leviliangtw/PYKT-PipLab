@@ -1,4 +1,5 @@
-# pip show pip
-# pip uninstall tensorflow
-# pip install --upgrade tensorflow
-# pip install tensorflow==1.15
+# python3 -m pip show pip
+# python3 -m pip uninstall tensorflow
+# python3 -m pip install --upgrade tensorflow
+# python3 -m pip install --force tensorflow
+# python3 -m pip install tensorflow==1.15

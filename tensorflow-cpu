@@ -1,0 +1,67 @@
+### TensorFlow for CPU ###
+
+[CPU INFO]
+
+Intel(R) Core(TM) i7-7560U CPU @ 2.40GHz
+
+$ grep flags -m1 /proc/cpuinfo | cut -d ":" -f 2 | tr '[:upper:]' '[:lower:]'
+
+[Developer Toolset 6/7/8]
+
+# 1. Install a package with repository for your system:
+# On CentOS, install package centos-release-scl available in CentOS repository:
+$ sudo yum install centos-release-scl
+
+# On RHEL, enable RHSCL repository for you system:
+$ sudo yum-config-manager --enable rhel-server-rhscl-7-rpms
+
+# 2. Install the collection:
+$ sudo yum install devtoolset-6
+$ sudo yum install devtoolset-7
+$ sudo yum install devtoolset-8
+
+# 3. Start using software collections:
+$ scl enable devtoolset-6 bash
+$ scl enable devtoolset-7 bash
+$ scl enable devtoolset-8 bash
+
+[Dependancy]
+
+$ yum -y install java-1.8.0-openjdk-devel automake autoconf libtool libicu gcc-c++
+
+$ python3 -m pip install --upgrade pip
+
+$ python3 -m pip install numpy grpcio Keras-Applications Keras-Preprocessing h5py requests enum34
+
+[Build]
+
+# install bazel 0.29.1
+
+$ git clone https://github.com/tensorflow/tensorflow.git
+
+$ bazel clean
+
+$ ./configure
+
+use /bin/python3
+
+$ vim .bazelrc
+mark "build --cxxopt=-std=c++14"
+mark "build --host_cxxopt=-std=c++14""
+add "build --cxxopt=-std=gnu++14"
+
+add --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0"
+
+[Build - Official CPU only]
+$ bazel build -c opt //tensorflow/tools/pip_package:build_pip_package
+
+[Build - Casey J. Li]
+$ bazel build -c opt --copt=-mavx --copt=-mavx2 --copt=-mfma --copt=-mfpmath=both -k //tensorflow/tools/pip_package:build_pip_package
+
+[Build - Intel i7-7560U]
+$ bazel build -c opt --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" --verbose_failures --copt=-msse4.1 --copt=-msse4.2 --copt=-mssse3 --copt=-mfma --copt=-mfpmath=both --copt=-mcx16 --copt=-mpopcnt --copt=-mavx --copt=-mavx2 //tensorflow/tools/pip_package:build_pip_package
+$ bazel build -c opt --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" --verbose_failures --copt=-mavx --copt=-mavx2 --copt=-mfma --copt=-mfpmath=both //tensorflow/tools/pip_package:build_pip_package
+
+$ bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
+
+$ pip install --upgrade /tmp/tensorflow_pkg/$(ls /tmp/tensorflow_pkg/ | grep tensorflow)
